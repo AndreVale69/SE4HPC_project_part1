@@ -61,7 +61,7 @@ TEST(MatrixMultiplicationTest, TestIdentityMultiplyMatrices) {
     };
     std::vector<std::vector<int>> C(1, std::vector<int>(1, 0));
 
-    multiplyMatricesWithoutErrors(A, B, C, 1, 1, 1);
+    multiplyMatrices(A, B, C, 1, 1, 1);
 
     std::vector<std::vector<int>> expected = {
             {1}
