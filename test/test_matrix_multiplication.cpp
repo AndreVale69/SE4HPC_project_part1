@@ -138,7 +138,7 @@ TEST(MatrixMultiplicationCorrectnessTest, TestZeroMatrices) {
 }
 
 
-TEST(MatrixMultiplicationCorrectnessTest, TestSquareZeroMatrices) {
+TEST(MatrixMultiplicationCorrectnessTest, TestSquare3x3ZeroMatrices) {
     /**
      * Error 4: Matrix B contains the number 3!
      * Error 8: Result matrix contains zero!
@@ -175,6 +175,50 @@ TEST(MatrixMultiplicationCorrectnessTest, TestSquareZeroMatrices) {
             {0, 0, 0},
             {0, 0, 0},
             {0, 0, 0}
+    };
+
+    // assert
+    ASSERT_EQ(D, expected) << "Matrix multiplication test failed! "
+                              "It's the algorithm given by the professor, "
+                              "maybe the test contains an error...";
+    ASSERT_EQ(C, expected) << "Matrix multiplication test failed!";
+}
+
+
+TEST(MatrixMultiplicationCorrectnessTest, TestSquare2x2ZeroMatrices) {
+    /**
+     * Error 4: Matrix B contains the number 3!
+     * Error 8: Result matrix contains zero!
+     * Error 11: Every row in matrix B contains at least one '0'!
+     * Error 12: The number of rows in A is equal to the number of columns in B!
+     * Error 16: Matrix B contains the number 6!
+     * Error 18: Matrix A is a square matrix!
+     * Error 20: Number of columns in matrix A is odd!
+     * Expected equality of these values:
+     * C
+     *      Which is: { { 2044, 7, 8 }, { 6, 4, 6 }, { 7, 3, 10 } }
+     * expected
+     *      Which is: { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } }
+     * Matrix multiplication test failed!
+    */
+    // arrange
+    std::vector<std::vector<int>> A = {
+            {0, 0},
+            {0, 0}
+    };
+    std::vector<std::vector<int>> B = {
+            {1, 2},
+            {3, 4}
+    };
+    std::vector<std::vector<int>> C(2, std::vector<int>(2, 0));
+    std::vector<std::vector<int>> D(2, std::vector<int>(2, 0));
+
+    // act
+    multiplyMatrices(A, B, C, 2, 2, 2);
+    multiplyMatricesWithoutErrors(A, B, D, 2, 2, 2);
+    std::vector<std::vector<int>> expected = {
+            {0, 0},
+            {0, 0}
     };
 
     // assert
