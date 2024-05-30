@@ -189,16 +189,14 @@ TEST(MatrixMultiplicationCorrectnessTest, TestSquare2x2ZeroMatrices) {
     /**
      * Error 4: Matrix B contains the number 3!
      * Error 8: Result matrix contains zero!
-     * Error 11: Every row in matrix B contains at least one '0'!
      * Error 12: The number of rows in A is equal to the number of columns in B!
-     * Error 16: Matrix B contains the number 6!
+     * Error 14: The result matrix C has an even number of rows!
      * Error 18: Matrix A is a square matrix!
-     * Error 20: Number of columns in matrix A is odd!
      * Expected equality of these values:
      * C
-     *      Which is: { { 2044, 7, 8 }, { 6, 4, 6 }, { 7, 3, 10 } }
+     *      Which is: { { 2071, 7 }, { 8, 6 } }
      * expected
-     *      Which is: { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } }
+     *      Which is: { { 0, 0 }, { 0, 0 } }
      * Matrix multiplication test failed!
     */
     // arrange
