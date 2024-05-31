@@ -1165,12 +1165,11 @@ TEST(MatrixMultiplicationVectorAndMatricesTest, TestVectorAndMatrices1x2and2x4) 
 TEST(MatrixMultiplicationVectorAndMatricesTest, TestVectorAndMatrices1x3and3x4) {
     /**
      * Error 4: Matrix B contains the number 3!
-     * Error 14: The result matrix C has an even number of rows!
      * Error 16: Matrix B contains the number 6!
      * Error 20: Number of columns in matrix A is odd!
      * Expected equality of these values:
      * C
-     *      Which is: { { 50, 56 }, { 0, 0 } }
+     *      Which is: { { 2062, 56, 62, 68 } }
      * expected
      *      Which is: { { 50, 56, 62, 68 } }
      * Matrix multiplication test failed!
@@ -1184,8 +1183,8 @@ TEST(MatrixMultiplicationVectorAndMatricesTest, TestVectorAndMatrices1x3and3x4) 
         { 7,  8,  9, 10},
         {11, 12, 13, 14}
     };
-    std::vector<std::vector<int>> C(2, std::vector<int>(2, 0));
-    std::vector<std::vector<int>> D(2, std::vector<int>(2, 0));
+    std::vector<std::vector<int>> C(1, std::vector<int>(4, 0));
+    std::vector<std::vector<int>> D(1, std::vector<int>(4, 0));
 
     // act
     multiplyMatrices(A, B, C, 1, 3, 4);
