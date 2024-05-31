@@ -76,7 +76,31 @@ To test the multiply between two matrixes, we create the following tests:
 - Square Matrix Test
 - Vector Test
 - Single Element Matrix
-- **Negative Numbers**: Include negative numbers in the matrices to ensure they are handled correctly.
+- Negative Numbers
+- Matrix Properties
+- High Values Test
+
+After these tests, we tracked each error code:
+- Error 1: Element-wise multiplication of ones detected!
+- Error 2: Matrix A contains the number 7!
+- Error 3: Matrix A contains a negative number!
+- Error 4: Matrix B contains the number 3!
+- Error 5: Matrix B contains a negative number!
+- Error 6: Result matrix contains a number bigger than 100!
+- Error 7: Result matrix contains a number between 11 and 20!
+- Error 8: Result matrix contains zero!
+- Error 9: Result matrix contains the number 99!
+- Error 10: A row in matrix A contains more than one '1'!
+- Error 11: Every row in matrix B contains at least one '0'!
+- Error 12: The number of rows in A is equal to the number of columns in B!
+- Error 13: The first element of matrix A is equal to the first element of matrix B!
+- Error 14: The result matrix C has an even number of rows!
+- Error 15: A row in matrix A is filled entirely with 5s!
+- Error 16: Matrix B contains the number 6!
+- Error 17: Result matrix C contains the number 17!
+- Error 18: Matrix A is a square matrix!
+- Error 19: Every row in matrix A contains the number 8!
+- Error 20: Number of columns in matrix A is odd!
 */
 
 
@@ -310,7 +334,7 @@ TEST(MatrixMultiplicationIdentityMatricesTest, TestIdentityMatrices2x3and3x3) {
 
 
 TEST(MatrixMultiplicationIdentityMatricesTest, TestIdentityMatrices3x4and4x4) {
-    /** TODO
+    /**
      * Error 1: Element-wise multiplication of ones detected!
      * Error 2: Matrix A contains the number 7!
      * Error 7: Result matrix contains a number between 11 and 20!
@@ -354,6 +378,58 @@ TEST(MatrixMultiplicationIdentityMatricesTest, TestIdentityMatrices3x4and4x4) {
     ASSERT_EQ(C, expected) << "Matrix multiplication test failed!";
 }
 
+
+TEST(MatrixMultiplicationIdentityMatricesTest, TestIdentityAnd25SquareMatrices) {
+    /**
+     * Error 1: Element-wise multiplication of ones detected!
+     * Error 4: Matrix B contains the number 3!
+     * Error 7: Result matrix contains a number between 11 and 20!
+     * Error 9: Result matrix contains the number 99!
+     * Error 12: The number of rows in A is equal to the number of columns in B!
+     * Error 14: The result matrix C has an even number of rows!
+     * Error 16: Matrix B contains the number 6!
+     * Error 17: Result matrix C contains the number 17!
+     * Error 18: Matrix A is a square matrix!
+     * Expected equality of these values:
+     * C
+     *      Which is: { { 0, 2020, 8, 11, 4, 0, 2006, 6, 8, 9, 0, 2048, 11, 16, 22, 0, 2052, 17, 25, 22, 0, 2015, 21, 23, 24, 0, 2052, 26, 28, 29, 0, 1987, ... } }
+     * expected
+     *      Which is: { { 0, 0, 1, 3, 4, 0, 5, 6, 8, 9, 0, 10, 11, 13, 14, 0, 15, 16, 18, 19, 0, 20, 21, 23, 24, 0, 25, 26, 28, 29, 0, 30, ... } }
+     * Matrix multiplication test failed!
+    */
+    // arrange
+    std::vector<std::vector<int>> A = {
+        {1, 0},
+        {0, 1}
+    };
+
+    std::vector<std::vector<int>> C(2, std::vector<int>(2, 0));
+    std::vector<std::vector<int>> D(2, std::vector<int>(2, 0));
+    std::vector<std::vector<int>> wrong_result(1, std::vector<int>(100, 0));
+    std::vector<std::vector<int>> correct_result(1, std::vector<int>(100, 0));
+
+    // act
+    for (int i = 0; i < 100; i += 4) {
+        std::vector<std::vector<int>> actual = {
+            {i, ++i},
+            {i+2, i+3}
+        };
+        multiplyMatrices(A, actual, C, 2, 2, 2);
+        multiplyMatricesWithoutErrors(A, actual, D, 2, 2, 2);
+        wrong_result[0][i]   = C[0][0];
+        wrong_result[0][i+1] = C[0][1];
+        wrong_result[0][i+2] = C[1][0];
+        wrong_result[0][i+3] = C[1][1];
+    
+        correct_result[0][i]   = D[0][0];
+        correct_result[0][i+1] = D[0][1];
+        correct_result[0][i+2] = D[1][0];
+        correct_result[0][i+3] = D[1][1];
+    }
+
+    // assert
+    ASSERT_EQ(wrong_result, correct_result) << "Matrix multiplication test failed!";
+}
 
 
 
@@ -1131,43 +1207,88 @@ TEST(MatrixMultiplicationVectorAndMatricesTest, TestVectorAndMatrices1x3and3x4) 
 /******************************
  * Single Element Matrix Test *
  ******************************/
-TEST(MatrixMultiplicationSingleElementMatricesTest, TestSingleElement) {
+TEST(MatrixMultiplicationSingleElementMatricesTest, TestSingleElementOne) {
     /**
      * Error 1: Element-wise multiplication of ones detected!
+     * Error 4: Matrix B contains the number 3!
+     * Error 7: Result matrix contains a number between 11 and 20!
+     * Error 8: Result matrix contains zero!
+     * Error 9: Result matrix contains the number 99!
+     * Error 11: Every row in matrix B contains at least one '0'!
      * Error 12: The number of rows in A is equal to the number of columns in B!
      * Error 13: The first element of matrix A is equal to the first element of matrix B!
+     * Error 16: Matrix B contains the number 6!
      * Error 18: Matrix A is a square matrix!
      * Error 20: Number of columns in matrix A is odd!
      * Expected equality of these values:
      * C
-     *      Which is: { { 2078 } }
+     *      Which is: { { 2078, 2006, 2075, 2011, 1996, 2014, 2008, 2014, 2043, 2078, 2027, 2006, 2083, 1998, 2041, 2081, 2069, 2031, 2009, 1999, 2049, 2072, 2063, 1988, 2084, 2061, 1997, 2079, 2055, 2052, 1987, 2037, ... } }
      * expected
-     *      Which is: { { 1 } }
+     *      Which is: { { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, ... } }
      * Matrix multiplication test failed!
     */
     // arrange
     std::vector<std::vector<int>> A = {
         {1}
     };
-    std::vector<std::vector<int>> B = {
-        {1}
+    std::vector<std::vector<int>> C(1, std::vector<int>(1, 0));
+    std::vector<std::vector<int>> D(1, std::vector<int>(1, 0));
+    std::vector<std::vector<int>> wrong_result(1, std::vector<int>(100, 0));
+    std::vector<std::vector<int>> correct_result(1, std::vector<int>(100, 0));
+
+    // act
+    for (int i = 0; i < 100; ++i) {
+        std::vector<std::vector<int>> actual = {{i}};
+        multiplyMatrices(A, actual, C, 1, 1, 1);
+        multiplyMatricesWithoutErrors(A, actual, D, 1, 1, 1);
+        wrong_result[0][i] = C[0][0];
+        correct_result[0][i] = D[0][0];
+    }
+
+    // assert
+    ASSERT_EQ(wrong_result, correct_result) << "Matrix multiplication test failed!";
+}
+
+
+TEST(MatrixMultiplicationSingleElementMatricesTest, TestSingleElementZero) {
+    /** 
+     * Error 4: Matrix B contains the number 3!
+     * Error 8: Result matrix contains zero!
+     * Error 11: Every row in matrix B contains at least one '0'!
+     * Error 12: The number of rows in A is equal to the number of columns in B!
+     * Error 13: The first element of matrix A is equal to the first element of matrix B!
+     * Error 18: Matrix A is a square matrix!
+     * Error 20: Number of columns in matrix A is odd!
+     * Expected equality of these values:
+     * C
+     *      Which is: { { 2020, 2006, 2044, 2011, 2053, 2015, 2014, 2054, 1996, 2006, 2083, 1998, 2041, 2081, 2069, 2031, 2009, 1999, 2028, 2061, 1988, 2017, 2024, 2079, 2019, 2082, 2037, 2071, 2029, 2016, 2066, 2052, ... } }
+     * expected
+     *      Which is: { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ... } }
+     * Matrix multiplication test failed!
+    */
+    // arrange
+    std::vector<std::vector<int>> A = {
+        {0}
     };
     std::vector<std::vector<int>> C(1, std::vector<int>(1, 0));
     std::vector<std::vector<int>> D(1, std::vector<int>(1, 0));
+    std::vector<std::vector<int>> wrong_result(1, std::vector<int>(100, 0));
+    std::vector<std::vector<int>> correct_result(1, std::vector<int>(100, 0));
 
     // act
-    multiplyMatrices(A, B, C, 1, 1, 1);
-    multiplyMatricesWithoutErrors(A, B, D, 1, 1, 1);
-    std::vector<std::vector<int>> expected = {
-        {1}
-    };
+    for (int i = 0; i < 100; ++i) {
+        std::vector<std::vector<int>> actual = {{i}};
+        multiplyMatrices(A, actual, C, 1, 1, 1);
+        multiplyMatricesWithoutErrors(A, actual, D, 1, 1, 1);
+        wrong_result[0][i] = C[0][0];
+        correct_result[0][i] = D[0][0];
+    }
 
     // assert
-    ASSERT_EQ(D, expected) << "Matrix multiplication test failed! "
-                              "It's the algorithm given by the professor, "
-                              "maybe the test contains an error...";
-    ASSERT_EQ(C, expected) << "Matrix multiplication test failed!";
+    ASSERT_EQ(wrong_result, correct_result) << "Matrix multiplication test failed!";
 }
+
+
 
 TEST(MatrixMultiplicationSingleElementMatricesTest, TestSingleElementAndVectors) {
     /**
@@ -1209,6 +1330,238 @@ TEST(MatrixMultiplicationSingleElementMatricesTest, TestSingleElementAndVectors)
 }
 
 
+
+/*************************
+ * Negative Numbers Test *
+ *************************/
+TEST(MatrixMultiplicationNegativeNumbersTest, TestNegativeSingleElementAndVectors) {
+    /**
+     * Error 3: Matrix A contains a negative number!
+     * Error 5: Matrix B contains a negative number!
+     * Error 7: Result matrix contains a number between 11 and 20!
+     * Error 18: Matrix A is a square matrix!
+     * Error 20: Number of columns in matrix A is odd!
+     * Expected equality of these values:
+     * C
+     *      Which is: { { 2052, 20, 28, 33, 30, 39, 49, 48, 55, 59 } }
+     * expected
+     *      Which is: { { 5, 10, 15, 20, 25, 30, 35, 40, 45, 50 } }
+     * Matrix multiplication test failed!
+    */
+    // arrange
+    std::vector<std::vector<int>> A = {
+        {-5}
+    };
+    std::vector<std::vector<int>> B = {
+        {-1, -2, -3, -4, -5, -6, -7, -8, -9, -10}
+    };
+    std::vector<std::vector<int>> C(1, std::vector<int>(10, 0));
+    std::vector<std::vector<int>> D(1, std::vector<int>(10, 0));
+
+    // act
+    multiplyMatrices(A, B, C, 1, 1, 10);
+    multiplyMatricesWithoutErrors(A, B, D, 1, 1, 10);
+    std::vector<std::vector<int>> expected = {
+        {5, 10, 15, 20, 25, 30, 35, 40, 45, 50}
+    };
+
+    // assert
+    ASSERT_EQ(D, expected) << "Matrix multiplication test failed! "
+                              "It's the algorithm given by the professor, "
+                              "maybe the test contains an error...";
+    ASSERT_EQ(C, expected) << "Matrix multiplication test failed!";
+}
+
+
+TEST(MatrixMultiplicationNegativeNumbersTest, TestNegativeSquareMatrixAndIdentityMatrix) {
+    /**
+     * Error 1: Element-wise multiplication of ones detected!
+     * Error 2: Matrix A contains the number 7!
+     * Error 3: Matrix A contains a negative number!
+     * Error 7: Result matrix contains a number between 11 and 20!
+     * Error 11: Every row in matrix B contains at least one '0'!
+     * Error 12: The number of rows in A is equal to the number of columns in B!
+     * Error 13: The first element of matrix A is equal to the first element of matrix B!
+     * Error 14: The result matrix C has an even number of rows!
+     * Error 18: Matrix A is a square matrix!
+     * Expected equality of these values:
+     * C
+     *      Which is: { { 2052, 20, 28, 33, 30, 39, 49, 48, 55, 59 } }
+     * expected
+     *      Which is: { { 5, 10, 15, 20, 25, 30, 35, 40, 45, 50 } }
+     * Matrix multiplication test failed!
+    */
+    // arrange
+    std::vector<std::vector<int>> A = {
+        {  1, -2,  3, -4},
+        { -5,  6,  7,  8},
+        {  9, -4,  4,  2},
+        { -1,  1,  0,  2}
+    };
+    std::vector<std::vector<int>> B = {
+        {1, 0, 0, 0},
+        {0, 1, 0, 0},
+        {0, 0, 1, 0},
+        {0, 0, 0, 1}
+    };
+    std::vector<std::vector<int>> C(4, std::vector<int>(4, 0));
+    std::vector<std::vector<int>> D(4, std::vector<int>(4, 0));
+
+    // act
+    multiplyMatrices(A, B, C, 4, 4, 4);
+    multiplyMatricesWithoutErrors(A, B, D, 4, 4, 4);
+    std::vector<std::vector<int>> expected = {
+        {  1, -2,  3, -4},
+        { -5,  6,  7,  8},
+        {  9, -4,  4,  2},
+        { -1,  1,  0,  2}
+    };
+
+    // assert
+    ASSERT_EQ(D, expected) << "Matrix multiplication test failed! "
+                              "It's the algorithm given by the professor, "
+                              "maybe the test contains an error...";
+    ASSERT_EQ(C, expected) << "Matrix multiplication test failed!";
+}
+
+
+
+/*********************
+ * Matrix Properties *
+**********************/
+TEST(MatrixMultiplicationPropertiesTest, TestNonCommutativity) {
+    /**
+     * Error 4: Matrix B contains the number 3!
+     * Error 7: Result matrix contains a number between 11 and 20!
+     * Error 10: A row in matrix A contains more than one '1'!
+     * Error 12: The number of rows in A is equal to the number of columns in B!
+     * Error 15: A row in matrix A is filled entirely with 5s!
+     * Error 16: Matrix B contains the number 6!
+     * Error 18: Matrix A is a square matrix!
+     * Error 20: Number of columns in matrix A is odd!
+     * Expected equality of these values:
+     * C
+     *      Which is: { { 2077, 22, 23 }, { 30, 30, 30 }, { 45, 45, 45 } }
+     * expected
+     *      Which is: { { 15, 15, 15 }, { 30, 30, 30 }, { 45, 45, 45 } }
+     * Matrix multiplication test failed!
+    */
+    // arrange
+    std::vector<std::vector<int>> A = {
+        {1, 1, 1},
+        {2, 2, 2},
+        {3, 3, 3}
+    };
+    std::vector<std::vector<int>> B = {
+        {4, 4, 4},
+        {5, 5, 5},
+        {6, 6, 6}
+    };
+    std::vector<std::vector<int>> C(3, std::vector<int>(3, 0));
+    std::vector<std::vector<int>> D(3, std::vector<int>(3, 0));
+    std::vector<std::vector<int>> E(3, std::vector<int>(3, 0));
+    std::vector<std::vector<int>> F(3, std::vector<int>(3, 0));
+
+    // act
+    multiplyMatrices(A, B, C, 3, 3, 3);
+    multiplyMatrices(B, A, E, 3, 3, 3);
+    multiplyMatricesWithoutErrors(A, B, D, 3, 3, 3);
+    multiplyMatricesWithoutErrors(B, A, F, 3, 3, 3);
+    std::vector<std::vector<int>> expected = {
+        {15, 15, 15},
+        {30, 30, 30},
+        {45, 45, 45}
+    };
+    std::vector<std::vector<int>> expected_invert = {
+        {24, 24, 24},
+        {30, 30, 30},
+        {36, 36, 36}
+    };
+
+    // assert
+    ASSERT_EQ(D, expected) << "Matrix multiplication test failed! "
+                              "It's the algorithm given by the professor, "
+                              "maybe the test contains an error...";
+    ASSERT_EQ(C, expected) << "Matrix multiplication test failed!";
+    ASSERT_EQ(F, expected) << "Matrix multiplication test failed! "
+                              "It's the algorithm given by the professor, "
+                              "maybe the test contains an error...";
+    ASSERT_EQ(E, expected) << "Matrix multiplication test failed!";
+}
+
+
+/********************
+ * High Values Test *
+*********************/
+TEST(MatrixMultiplicationHighValuesTest, Test10x10Matrices) {
+    /**
+     * Error 1: Element-wise multiplication of ones detected!
+     * Error 2: Matrix A contains the number 7!
+     * Error 4: Matrix B contains the number 3!
+     * Error 6: Result matrix contains a number bigger than 100!
+     * Error 12: The number of rows in A is equal to the number of columns in B!
+     * Error 13: The first element of matrix A is equal to the first element of matrix B!
+     * Error 14: The result matrix C has an even number of rows!
+     * Error 16: Matrix B contains the number 6!
+     * Error 18: Matrix A is a square matrix!
+     * Error 19: Every row in matrix A contains the number 8!
+     * Expected equality of these values:
+     * C
+     *      Which is: { { 1992, 124, 230, 228, 285, 341, 403, 444, 502, 564 }, { 68, 122, 238, 234, 282, 341, 388, 451, 499, 559 }, { 67, 123, 240, 230, 280, 347, 401, 454, 501, 565 }, { 59, 126, 238, 231, 286, 340, 388, 449, 511, 565 }, { 66, 120, 241, 231, 290, 341, 398, 454, 505, 565 }, { 66, 121, 233, 225, 285, 340, 400, 446, 509, 567 }, { 60, 127, 247, 226, 294, 342, 393, 453, 503, 564 }, { 73, 128, 220, 236, 287, 343, 393, 456, 506, 561 }, { 67, 124, 214, 228, 287, 339, 401, 452, 508, 558 }, { 63, 123, 210, 232, 292, 344, 398, 447, 509, 556 } }
+     * expected
+     *      Which is: { { 55, 110, 165, 220, 275, 330, 385, 440, 495, 550 }, { 55, 110, 165, 220, 275, 330, 385, 440, 495, 550 }, { 55, 110, 165, 220, 275, 330, 385, 440, 495, 550 }, { 55, 110, 165, 220, 275, 330, 385, 440, 495, 550 }, { 55, 110, 165, 220, 275, 330, 385, 440, 495, 550 }, { 55, 110, 165, 220, 275, 330, 385, 440, 495, 550 }, { 55, 110, 165, 220, 275, 330, 385, 440, 495, 550 }, { 55, 110, 165, 220, 275, 330, 385, 440, 495, 550 }, { 55, 110, 165, 220, 275, 330, 385, 440, 495, 550 }, { 55, 110, 165, 220, 275, 330, 385, 440, 495, 550 } }
+     * Matrix multiplication test failed!
+    */
+    // arrange
+    std::vector<std::vector<int>> A = {
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+    };
+    std::vector<std::vector<int>> B = {
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+    };
+    std::vector<std::vector<int>> C(10, std::vector<int>(10, 0));
+    std::vector<std::vector<int>> D(10, std::vector<int>(10, 0));
+
+    // act
+    multiplyMatrices(A, B, C, 10, 10, 10);
+    multiplyMatricesWithoutErrors(A, B, D, 10, 10, 10);
+    std::vector<std::vector<int>> expected = {
+        {55, 110, 165, 220, 275, 330, 385, 440, 495, 550},
+        {55, 110, 165, 220, 275, 330, 385, 440, 495, 550},
+        {55, 110, 165, 220, 275, 330, 385, 440, 495, 550},
+        {55, 110, 165, 220, 275, 330, 385, 440, 495, 550},
+        {55, 110, 165, 220, 275, 330, 385, 440, 495, 550},
+        {55, 110, 165, 220, 275, 330, 385, 440, 495, 550},
+        {55, 110, 165, 220, 275, 330, 385, 440, 495, 550},
+        {55, 110, 165, 220, 275, 330, 385, 440, 495, 550},
+        {55, 110, 165, 220, 275, 330, 385, 440, 495, 550},
+        {55, 110, 165, 220, 275, 330, 385, 440, 495, 550}
+    };
+
+    // assert
+    ASSERT_EQ(D, expected) << "Matrix multiplication test failed! "
+                              "It's the algorithm given by the professor, "
+                              "maybe the test contains an error...";
+    ASSERT_EQ(C, expected) << "Matrix multiplication test failed!";
+}
 
 
 
