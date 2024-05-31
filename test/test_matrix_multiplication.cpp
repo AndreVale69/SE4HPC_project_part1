@@ -1483,10 +1483,10 @@ TEST(MatrixMultiplicationPropertiesTest, TestNonCommutativity) {
                               "It's the algorithm given by the professor, "
                               "maybe the test contains an error...";
     ASSERT_EQ(C, expected) << "Matrix multiplication test failed!";
-    ASSERT_EQ(F, expected) << "Matrix multiplication test failed! "
+    ASSERT_EQ(F, expected_invert) << "Matrix multiplication test failed! "
                               "It's the algorithm given by the professor, "
                               "maybe the test contains an error...";
-    ASSERT_EQ(E, expected) << "Matrix multiplication test failed!";
+    ASSERT_EQ(E, expected_invert) << "Matrix multiplication test failed!";
 }
 
 
